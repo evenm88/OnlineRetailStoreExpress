@@ -11,20 +11,16 @@ public async findAllProduct(){
 }
     
 public async findProductById(id: string){
-    console.log(id);
     const product:Product = await this.products.findOne({ProductId: id });
-
     return product;
 }
 
 public async findProductByName(productName: string){
-    console.log(productName);
     const products:Product = await this.products.findOne({ProductName: productName });
     return products;
 }
  
 public async createProduct(product: Product) {
-    
     const createdProduct: Product = await this.products.create({ 
         ProductId: product.ProductId,
         ProductName: product.ProductName,

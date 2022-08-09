@@ -1,3 +1,4 @@
+import { Order } from '@/interfaces/order.interface';
 import { model, Schema, Document } from 'mongoose';
 
 var orderSchema:Schema = new Schema({
@@ -6,7 +7,7 @@ var orderSchema:Schema = new Schema({
         required: true,
         unique: true,
       },
-      Product : {
+      ProductId  : {
         type: String,
         required: true,
       },
@@ -20,6 +21,6 @@ var orderSchema:Schema = new Schema({
       },
 });
 
-const orderModel = model('order',orderSchema);
+const orderModel = model<Order>('order',orderSchema);
 
 export default orderModel;
