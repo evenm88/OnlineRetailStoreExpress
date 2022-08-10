@@ -6,22 +6,22 @@ class ProductService{
 
 public products = productModel;
 
-public async findAllProduct(){
+public async findAllProduct(): Promise<Product[]>{
     const products:Product[] = await this.products.find();
     return products;
 }
     
-public async findProductById(id: string){
+public async findProductById(id: string): Promise<Product>{
     const product:Product = await this.products.findOne({ProductId: id });
     return product;
 }
 
-public async findProductByName(productName: string){
-    const products:Product = await this.products.findOne({ProductName: productName });
-    return products;
+public async findProductByName(productName: string): Promise<Product>{
+    const product:Product = await this.products.findOne({ProductName: productName });
+    return product;
 }
  
-public async createProduct(productData: CreateProductDto) {
+public async createProduct(productData: CreateProductDto): Promise<Product> {
     const createdProduct: Product = await this.products.create({ 
         ProductId: productData.ProductId,
         ProductName: productData.ProductName,
@@ -31,7 +31,7 @@ public async createProduct(productData: CreateProductDto) {
     return createdProduct;
   }
 
-  public async updateProduct(productData: CreateProductDto) {
+  public async updateProduct(productData: CreateProductDto): Promise<Product> {
      await this.products.findOneAndUpdate({ProductId: productData.ProductId },{ 
         ProductName: productData.ProductName,
         ProductPrice: productData.ProductPrice,
@@ -41,8 +41,7 @@ public async createProduct(productData: CreateProductDto) {
     return updatedProduct;
   }
 
-  public async deleteProductById(id: string){
-    console.log(id);
+  public async deleteProductById(id: string): Promise<Product>{
     const product:Product = await this.products.findOneAndDelete({ProductId: id });
     return product;
 }

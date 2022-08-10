@@ -10,6 +10,7 @@ var productSchema:Schema = new Schema({
       ProductName : {
         type: String,
         required: true,
+        unique: true,
       },
        ProductPrice : {
         type: Number,

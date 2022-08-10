@@ -17,6 +17,7 @@ class ordersController {
 
       public getordersById = async (req: Request, res: Response, next: NextFunction) => {
         try {
+          console.log(req.params.id);
           const order: Order = await this.orderService.FindOrder(req.params.id);
           res.status(200).json({ data: order, message: 'find order by id' });
         } catch (error) {

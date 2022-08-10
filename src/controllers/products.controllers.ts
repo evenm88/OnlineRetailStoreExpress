@@ -47,7 +47,8 @@ class ProductsController {
       
       public updateProduct = async (req: Request, res: Response, next: NextFunction) => {
         try {
-          const productData:CreateProductDto = req.body;
+            const productData:CreateProductDto = req.body;
+            console.log(JSON.stringify(productData));
             const product: Product = await this.productService.updateProduct(productData);
             res.status(200).json({ data: product, message: 'Update product' });
         } catch (error) {

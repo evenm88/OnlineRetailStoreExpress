@@ -13,21 +13,19 @@ public orders = orderModel;
 public products = productModel;
 public productService = new ProductService();
 
-public async FindAllOrder(){
+public async FindAllOrder(): Promise<Order[]>{
     const orders:Order[] = await this.orders.find();
     return orders;
 }
 
-public async FindOrder(id:string){
-    const order:Order = await this.orders.findById({OrderId: id});
+public async FindOrder(orderId: String): Promise<Order>{
+    const order:Order = await this.orders.findOne({OrderId: orderId});
     return order;
 }
     
-public async CreateOrder(orderData: CreateOrderDto) {
+public async CreateOrder(orderData: CreateOrderDto): Promise<Order> {
      const selectedProduct:Product = await this.products.findOne({ProductId: orderData.ProductId });
-     
-
-    if(selectedProduct === null)
+     if(selectedProduct === null)
         throw new HttpException(400 ,"Product brought in order is not found");
 
         var remainingQuantity:Number = selectedProduct.AvailableQuantity.valueOf() - orderData.Quantity.valueOf();
@@ -42,7 +40,6 @@ public async CreateOrder(orderData: CreateOrderDto) {
             BillAmount: orderData.BillAmount,
          });
 
-   
         selectedProduct.AvailableQuantity = remainingQuantity;
         console.log(JSON.stringify(selectedProduct));
         await this.productService.updateProduct(selectedProduct);
@@ -50,7 +47,7 @@ public async CreateOrder(orderData: CreateOrderDto) {
         return createdOrder;
 }
 
-  public async UpdateOrder(orderData: CreateOrderDto) {
+  public async UpdateOrder(orderData: CreateOrderDto): Promise<Order> {
     const selectedOrder:Order = await this.orders.findOne({OrderId:orderData.OrderId});
     if(selectedOrder === null)
         throw new HttpException(404,"Given order id not found");
@@ -63,7 +60,7 @@ public async CreateOrder(orderData: CreateOrderDto) {
     return updatedorder;
   }
 
-  public async DeleteOrderById(id: string){
+  public async DeleteOrderById(id: string): Promise<Order>{
     const deletedOrder:Order = await this.orders.findOneAndDelete({OrderId: id });
     if(deletedOrder === null)
         throw new HttpException(404,"Given order id not found");
