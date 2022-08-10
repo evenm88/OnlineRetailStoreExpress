@@ -1,4 +1,4 @@
-import { IsAlphanumeric, IsNumber } from 'class-validator';
+import { IsAlphanumeric, IsNumber ,IsBoolean} from 'class-validator';
 
 export class CreateProductDto {
   @IsAlphanumeric()
@@ -12,4 +12,7 @@ export class CreateProductDto {
   
   @IsNumber()
   public AvailableQuantity: Number;
+
+  @IsBoolean()
+  public Status: Boolean = true;
 }

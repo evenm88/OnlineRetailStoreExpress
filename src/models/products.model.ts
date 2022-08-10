@@ -20,6 +20,10 @@ var productSchema:Schema = new Schema({
         type: Number,
         required: true,
       },
+      Status : {
+        type: Boolean,
+        required: true,
+      },
 });
 
 const productModel = model<Product>('product', productSchema);

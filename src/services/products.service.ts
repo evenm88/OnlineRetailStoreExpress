@@ -7,7 +7,7 @@ class ProductService{
 public products = productModel;
 
 public async findAllProduct(): Promise<Product[]>{
-    const products:Product[] = await this.products.find();
+    const products:Product[] = await this.products.find().where({'Status':true});
     return products;
 }
     
@@ -27,6 +27,7 @@ public async createProduct(productData: CreateProductDto): Promise<Product> {
         ProductName: productData.ProductName,
         ProductPrice: productData.ProductPrice,
         AvailableQuantity: productData.AvailableQuantity,
+        Status: true
      });
     return createdProduct;
   }
@@ -42,7 +43,11 @@ public async createProduct(productData: CreateProductDto): Promise<Product> {
   }
 
   public async deleteProductById(id: string): Promise<Product>{
-    const product:Product = await this.products.findOneAndDelete({ProductId: id });
+   // const product:Product = await this.products.findOneAndDelete({ProductId: id });
+   const product:Product = await this.products.findOne({ProductId: id });
+   await this.products.findOneAndUpdate({ProductId: product.ProductId },{ 
+    Status: false
+ });
     return product;
 }
 

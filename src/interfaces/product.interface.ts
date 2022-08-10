@@ -4,4 +4,5 @@ export interface Product {
     ProductName: string;
     ProductPrice:Number;
     AvailableQuantity:Number;
+    Status:Boolean;
   }

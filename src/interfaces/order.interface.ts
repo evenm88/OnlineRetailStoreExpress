@@ -4,4 +4,5 @@ export interface Order {
     ProductId: string;
     Quantity:Number;
     BillAmount:Number;
+    Status:Boolean;
   }

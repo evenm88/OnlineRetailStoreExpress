@@ -19,6 +19,10 @@ var orderSchema:Schema = new Schema({
         type: Number,
         required: true,
       },
+      Status : {
+        type: Boolean,
+        required: true,
+      },
 });
 
 const orderModel = model<Order>('order',orderSchema);

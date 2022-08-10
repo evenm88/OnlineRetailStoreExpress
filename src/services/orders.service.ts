@@ -38,6 +38,7 @@ public async CreateOrder(orderData: CreateOrderDto): Promise<Order> {
             ProductId: orderData.ProductId,
             Quantity: orderData.Quantity,
             BillAmount: orderData.BillAmount,
+            Status: true
          });
 
         selectedProduct.AvailableQuantity = remainingQuantity;
@@ -61,9 +62,13 @@ public async CreateOrder(orderData: CreateOrderDto): Promise<Order> {
   }
 
   public async DeleteOrderById(id: string): Promise<Order>{
-    const deletedOrder:Order = await this.orders.findOneAndDelete({OrderId: id });
+    //const deletedOrder:Order = await this.orders.findOneAndDelete({OrderId: id });
+    const deletedOrder:Order = await this.products.findOne({OrderId: id });
     if(deletedOrder === null)
         throw new HttpException(404,"Given order id not found");
+    await this.products.findOneAndUpdate({OrderId: deletedOrder.OrderId },{ 
+            Status: false
+         });
     const selectedProduct:Product = await this.products.findOne({ProductId: deletedOrder.ProductId });
     if(selectedProduct === null)
         throw new HttpException(404,"Product brought in order is not found");
