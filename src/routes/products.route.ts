@@ -1,6 +1,8 @@
 import ProductsController from "@/controllers/products.controllers";
+import { CreateProductDto } from "@/dtos/product.dto";
 import { Routes } from "@/interfaces/routes.interface";
 import { Router } from "express";
+import validationMiddleware from "@/middlewares/validation.middleware";
 
 
 class ProductRoute implements Routes{
@@ -16,8 +18,8 @@ class ProductRoute implements Routes{
         this.router.get(`${this.path}`, this.productController.getProducts);
         this.router.get(`${this.path}/:id`, this.productController.findProductById);
         this.router.get(`${this.path}/name/:name`, this.productController.findProductByName);
-        this.router.post(`${this.path}`, this.productController.createProduct);
-        this.router.put(`${this.path}`, this.productController.updateProduct);
+        this.router.post(`${this.path}`,validationMiddleware(CreateProductDto, 'body'), this.productController.createProduct);
+        this.router.put(`${this.path}`, validationMiddleware(CreateProductDto, 'body'),this.productController.updateProduct);
         this.router.delete(`${this.path}/:id`, this.productController.deleteProduct);
     }
 

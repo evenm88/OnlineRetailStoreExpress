@@ -1,3 +1,4 @@
+import { CreateProductDto } from '@/dtos/product.dto';
 import { Product } from '@/interfaces/product.interface';
 import productModel from '../models/products.model';
 
@@ -20,32 +21,29 @@ public async findProductByName(productName: string){
     return products;
 }
  
-public async createProduct(product: Product) {
+public async createProduct(productData: CreateProductDto) {
     const createdProduct: Product = await this.products.create({ 
-        ProductId: product.ProductId,
-        ProductName: product.ProductName,
-        ProductPrice: product.ProductPrice,
-        AvailableQuantity: product.AvailableQuantity,
+        ProductId: productData.ProductId,
+        ProductName: productData.ProductName,
+        ProductPrice: productData.ProductPrice,
+        AvailableQuantity: productData.AvailableQuantity,
      });
-
     return createdProduct;
   }
 
-  public async updateProduct(product: Product) {
-    
-     await this.products.findOneAndUpdate({ProductId: product.ProductId },{ 
-        ProductName: product.ProductName,
-        ProductPrice: product.ProductPrice,
-        AvailableQuantity: product.AvailableQuantity,
+  public async updateProduct(productData: CreateProductDto) {
+     await this.products.findOneAndUpdate({ProductId: productData.ProductId },{ 
+        ProductName: productData.ProductName,
+        ProductPrice: productData.ProductPrice,
+        AvailableQuantity: productData.AvailableQuantity,
      });
-     const updatedProduct: Product = await this.products.findOne({ProductId: product.ProductId });
+     const updatedProduct: Product = await this.products.findOne({ProductId: productData.ProductId });
     return updatedProduct;
   }
 
   public async deleteProductById(id: string){
     console.log(id);
     const product:Product = await this.products.findOneAndDelete({ProductId: id });
-
     return product;
 }
 

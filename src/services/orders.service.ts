@@ -1,3 +1,4 @@
+import { CreateOrderDto } from '@/dtos/order.dto';
 import { HttpException } from '@/exceptions/HttpException';
 import { Order } from '@/interfaces/order.interface';
 import { Product } from '@/interfaces/product.interface';
@@ -22,23 +23,23 @@ public async FindOrder(id:string){
     return order;
 }
     
-public async CreateOrder(order: Order) {
-     const selectedProduct:Product = await this.products.findOne({ProductId: order.ProductId });
+public async CreateOrder(orderData: CreateOrderDto) {
+     const selectedProduct:Product = await this.products.findOne({ProductId: orderData.ProductId });
      
 
     if(selectedProduct === null)
         throw new HttpException(400 ,"Product brought in order is not found");
 
-        var remainingQuantity:Number = selectedProduct.AvailableQuantity.valueOf() - order.Quantity.valueOf();
+        var remainingQuantity:Number = selectedProduct.AvailableQuantity.valueOf() - orderData.Quantity.valueOf();
 
         if(remainingQuantity <0)
         throw new HttpException(400 ,"Ordered quantity is not available");
 
         const createdOrder: Order = await this.orders.create({ 
-            OrderId: order.OrderId,
-            ProductId: order.ProductId,
-            Quantity: order.Quantity,
-            BillAmount: order.BillAmount,
+            OrderId: orderData.OrderId,
+            ProductId: orderData.ProductId,
+            Quantity: orderData.Quantity,
+            BillAmount: orderData.BillAmount,
          });
 
    
@@ -49,16 +50,16 @@ public async CreateOrder(order: Order) {
         return createdOrder;
 }
 
-  public async UpdateOrder(order: Order) {
-    const selectedOrder:Order = await this.orders.findOne({OrderId:order.OrderId});
+  public async UpdateOrder(orderData: CreateOrderDto) {
+    const selectedOrder:Order = await this.orders.findOne({OrderId:orderData.OrderId});
     if(selectedOrder === null)
         throw new HttpException(404,"Given order id not found");
     await this.orders.findOneAndUpdate({OrderId: selectedOrder.OrderId },{ 
-        ProductId: order.ProductId,
-        Quantity: order.Quantity,
-        BillAmount: order.BillAmount,
+        ProductId: orderData.ProductId,
+        Quantity: orderData.Quantity,
+        BillAmount: orderData.BillAmount,
      });
-     const updatedorder: Order = await this.orders.findOne({OrderId: order.OrderId });
+     const updatedorder: Order = await this.orders.findOne({OrderId: orderData.OrderId });
     return updatedorder;
   }
 
