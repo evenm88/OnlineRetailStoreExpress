@@ -25,4 +25,9 @@ jobs:
           REMOTE_HOST: ${{ secrets.HOST_DNS }}
           REMOTE_USER: ${{ secrets.USERNAME }}
           TARGET: ${{ secrets.TARGET_DIR }}
-        
+      
+      - name: Run application   
+      - uses: actions/checkout@v3
+      - run: npm install
+      - run: npm run build
+          
