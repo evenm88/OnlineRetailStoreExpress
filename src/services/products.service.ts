@@ -1,4 +1,5 @@
 import { CreateProductDto } from '@/dtos/product.dto';
+import { HttpException } from '@/exceptions/HttpException';
 import { Product } from '@/interfaces/product.interface';
 import productModel from '../models/products.model';
 
@@ -13,11 +14,13 @@ public async findAllProduct(): Promise<Product[]>{
     
 public async findProductById(id: string): Promise<Product>{
     const product:Product = await this.products.findOne({ProductId: id }).where({'Status':true});
+    if (!product) throw new HttpException(409, "Product doesn't exist");
     return product;
 }
 
 public async findProductByName(productName: string): Promise<Product>{
     const product:Product = await this.products.findOne({ProductName: productName });
+    if (!product) throw new HttpException(409, "Product doesn't exist");
     return product;
 }
  
