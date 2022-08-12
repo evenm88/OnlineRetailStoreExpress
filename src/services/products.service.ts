@@ -12,7 +12,7 @@ public async findAllProduct(): Promise<Product[]>{
 }
     
 public async findProductById(id: string): Promise<Product>{
-    const product:Product = await this.products.findOne({ProductId: id });
+    const product:Product = await this.products.findOne({ProductId: id }).where({'Status':true});
     return product;
 }
 
@@ -44,7 +44,7 @@ public async createProduct(productData: CreateProductDto): Promise<Product> {
 
   public async deleteProductById(id: string): Promise<Product>{
    // const product:Product = await this.products.findOneAndDelete({ProductId: id });
-   const product:Product = await this.products.findOne({ProductId: id });
+   const product:Product = await this.products.findOne({ProductId: id }).where({'Status':true});
    await this.products.findOneAndUpdate({ProductId: product.ProductId },{ 
     Status: false
  });
