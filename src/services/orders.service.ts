@@ -19,7 +19,7 @@ public async FindAllOrder(): Promise<Order[]>{
 }
 
 public async FindOrder(orderId: String): Promise<Order>{
-    const order:Order = await this.orders.findOne({OrderId: orderId});
+    const order:Order = await this.orders.findOne({OrderId: orderId}).where({'Status':true});;
     return order;
 }
     
@@ -49,7 +49,7 @@ public async CreateOrder(orderData: CreateOrderDto): Promise<Order> {
 }
 
   public async UpdateOrder(orderData: CreateOrderDto): Promise<Order> {
-    const selectedOrder:Order = await this.orders.findOne({OrderId:orderData.OrderId});
+    const selectedOrder:Order = await this.orders.findOne({OrderId:orderData.OrderId}).where({'Status':true});;
     if(selectedOrder === null)
         throw new HttpException(404,"Given order id not found");
     await this.orders.findOneAndUpdate({OrderId: selectedOrder.OrderId },{ 
@@ -57,19 +57,19 @@ public async CreateOrder(orderData: CreateOrderDto): Promise<Order> {
         Quantity: orderData.Quantity,
         BillAmount: orderData.BillAmount,
      });
-     const updatedorder: Order = await this.orders.findOne({OrderId: orderData.OrderId });
+     const updatedorder: Order = await this.orders.findOne({OrderId: orderData.OrderId }).where({'Status':true});;
     return updatedorder;
   }
 
   public async DeleteOrderById(id: string): Promise<Order>{
     //const deletedOrder:Order = await this.orders.findOneAndDelete({OrderId: id });
-    const deletedOrder:Order = await this.products.findOne({OrderId: id });
+    const deletedOrder: Order = await this.orders.findOne({OrderId: id }).where({'Status':true});
     if(deletedOrder === null)
         throw new HttpException(404,"Given order id not found");
-    await this.products.findOneAndUpdate({OrderId: deletedOrder.OrderId },{ 
+    await this.orders.findOneAndUpdate({OrderId: deletedOrder.OrderId },{ 
             Status: false
          });
-    const selectedProduct:Product = await this.products.findOne({ProductId: deletedOrder.ProductId });
+    const selectedProduct:Product = await this.products.findOne({ProductId: deletedOrder.ProductId }).where({'Status':true});
     if(selectedProduct === null)
         throw new HttpException(404,"Product brought in order is not found");
         console.log(JSON.stringify(selectedProduct));
